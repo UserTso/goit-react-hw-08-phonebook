@@ -1,4 +1,5 @@
-import {useState, useEffect} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {addContacts, deleteContacts, filterContacts} from '../../redux/slice';
 import { ContactForm } from '../ContactForm/ContactForm';
 import { Section } from '../Section/Section';
 import { Filter } from '../Filter/Filter';
@@ -8,49 +9,39 @@ import {GlobalBox} from './App.styled';
 
 export function App() {
 
-	const [contacts, setContacts] = useState(() => {return (
-	JSON.parse(window.localStorage.getItem('contacts')) ?? [])
-});
-const [filter, setFilter] = useState('');
+const state = useSelector(state => state);
+const dispatch = useDispatch();
 
-useEffect(() => {
-	window.localStorage.setItem('contacts', JSON.stringify(contacts)
-)}, [contacts])
 
 		
 const getValueSubmitForm = value => {
     if(checkContacts(value.name)) {
       return alert(`${value.name} is already in contacts`)
     }
-	setContacts(prevContacts =>  [...prevContacts, value],
-			)
+			dispatch(addContacts(value))
 	};
 
 const checkContacts = contact => {
-  return contacts.find(element => 
+  return state.contacts.find(element => 
     element.name.toLowerCase() === contact.toLowerCase()
   )
 }
 
 const onChange = (event) => {
-		// console.log(event.currentTarget)
 		const {value} = event.currentTarget;
-		// передаем значение из инпута в фильтр
-		setFilter(value);
-	    console.log(setFilter)
+		dispatch(filterContacts(value))
 	    }
 
 const onFilterContact = () => {
-	const currentFilter = filter.toLowerCase();
-	return contacts.filter((element) => {
+	const currentFilter = state.filter.toLowerCase();
+	return state.contacts.filter((element) => {
 return element.name.toLowerCase().includes(currentFilter)
 	})
 }
 
 const onDeleteContact = (id) => {
-	setContacts(contacts.filter((element) => {
-	return element.id !== id
-}))
+
+dispatch(deleteContacts(id))
 }
 
 		return (
