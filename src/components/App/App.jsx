@@ -1,19 +1,25 @@
 import { useDispatch, useSelector } from 'react-redux';
-import {addContacts, deleteContacts, filterContacts} from '../../redux/slice';
+import {useEffect} from 'react';
+import { fetchContacts } from 'redux/operations';
+
 import { ContactForm } from '../ContactForm/ContactForm';
 import { Section } from '../Section/Section';
 import { Filter } from '../Filter/Filter';
 import {ContactList} from '../ContactList/ContactList';
 import {GlobalBox} from './App.styled';
 
+import { addContacts, deleteContacts } from "redux/operations";
+import {filterContacts} from 'redux/slice';
 
 export function App() {
 
-const state = useSelector(state => state);
+const {contacts, filter} = useSelector(state => state);
+
 const dispatch = useDispatch();
+useEffect(()=>{
+	        dispatch(fetchContacts())
+	    }, [dispatch])
 
-
-		
 const getValueSubmitForm = value => {
     if(checkContacts(value.name)) {
       return alert(`${value.name} is already in contacts`)
@@ -22,27 +28,23 @@ const getValueSubmitForm = value => {
 	};
 
 const checkContacts = contact => {
-  return state.contacts.find(element => 
+  return contacts.items.find(element => 
     element.name.toLowerCase() === contact.toLowerCase()
   )
 }
 
 const onChange = (event) => {
-		const {value} = event.currentTarget;
-		dispatch(filterContacts(value))
+		const name = event.currentTarget.value;
+		dispatch(filterContacts(name))
 	    }
 
 const onFilterContact = () => {
-	const currentFilter = state.filter.toLowerCase();
-	return state.contacts.filter((element) => {
+	const currentFilter = filter.toLowerCase();
+	return contacts.items.filter((element) => {
 return element.name.toLowerCase().includes(currentFilter)
 	})
 }
 
-const onDeleteContact = (id) => {
-
-dispatch(deleteContacts(id))
-}
 
 		return (
 			<>
@@ -52,7 +54,8 @@ dispatch(deleteContacts(id))
 				</Section>
 				<Section title="Contacts">
 					<Filter onChange={onChange} />
-					<ContactList contacts={onFilterContact()} deleteContact={onDeleteContact} />
+					<ContactList contacts={onFilterContact()} 
+					onDeleteContact={(id) => dispatch(deleteContacts(id))}/>
 				</Section>
 				</GlobalBox>
 			</>

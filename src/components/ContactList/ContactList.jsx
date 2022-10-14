@@ -1,30 +1,30 @@
-import PropTypes from 'prop-types';
+
+
+import { useSelector } from 'react-redux';
+import GridLoader from "react-spinners/GridLoader";
 import {ContactItem} from '../ContactItem';
-import {List} from './ContactList.styled';
+import {List, Box} from './ContactList.styled';
 
 
+export const ContactList = ({contacts, onDeleteContact}) => {
 
+  
 
-export const ContactList = ({contacts, deleteContact}) => {
+   const spinner = useSelector(state=> state.contacts.isLoading)
+
     return (
-        <List>
-{contacts.map(({id, name, number}) => {
+       <Box>
+       {spinner ? <GridLoader  color="#12039b" /> : <List>
+{contacts.map(({id, name, phone}) => {
     return (
-        <ContactItem key={id} id={id} name={name} number={number} deleteContact={deleteContact} />
+        <ContactItem key={id} id={id} name={name} phone={phone} onDeleteContact={onDeleteContact}/>
     )
 })}
-        </List>
+        </List>}
+       </Box>
+        
     )
 }
 
-
-ContactList.propTypes = {
-    contacts: PropTypes.arrayOf(PropTypes.shape({
-        id:  PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        number: PropTypes.string.isRequired,
-    })).isRequired,
-    deleteContact: PropTypes.func.isRequired,
-};
 
 

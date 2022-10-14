@@ -1,5 +1,4 @@
 import React from 'react';
-import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 import {
 	Wrapper,
@@ -16,24 +15,22 @@ import * as yup from 'yup';
 
 const schema = yup.object().shape({
 	name: yup.string().max(16).required(),
-number: yup.string().required()});
+phone: yup.string().required()});
 
 const FormError = ({name}) => {
 	return <ErrorMessage name={name} render={message => <ErrorText>{message}</ErrorText>} />
-	
 }
 
 export function ContactForm({ submitForm }) {
 	const initialValues = {
 		name: '',
-		number: '',
+		phone: '',
 	};
 
-	const handleSubmitForm = ({ name, number }, { resetForm }) => {
+	const handleSubmitForm = ({ name, phone }, { resetForm }) => {
 		const newContact = {
-			id: nanoid(),
 			name: name,
-			number: number,
+			phone: phone,
 		};
 		// передача нового контакта в App
 		submitForm(newContact);
@@ -58,7 +55,7 @@ export function ContactForm({ submitForm }) {
 						<Span>Number</Span>
 						<InputForm
 							type="tel"
-							name="number"
+							name="phone"
 							title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
 							required
 						/>
