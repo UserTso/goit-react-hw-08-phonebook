@@ -1,64 +1,62 @@
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { Layout } from '../Layout/Layout';
+import { Home } from '../../Pages/Home/Home';
+import { PageContact } from '../../Pages/PageContact/PageContact';
+import { PrivateRoute } from 'components/PrivateRoute/PrivateRoute';
+import { PageLogin } from '../../Pages/PageLogin/PageLogin';
+import { PageRegister } from '../../Pages/PageRegister/PageRegister';
 import { useDispatch, useSelector } from 'react-redux';
-import {useEffect} from 'react';
-import { fetchContacts } from 'redux/operations';
-
-import { ContactForm } from '../ContactForm/ContactForm';
-import { Section } from '../Section/Section';
-import { Filter } from '../Filter/Filter';
-import {ContactList} from '../ContactList/ContactList';
-import {GlobalBox} from './App.styled';
-
-import { addContacts, deleteContacts } from "redux/operations";
-import {filterContacts} from 'redux/slice';
+import { getIsFetchingCurrentUser } from 'redux/auth/authSelectors';
+import { fetchCurrentUser } from 'redux/auth/authOperations';
+import { useEffect } from 'react';
+import { PublicRoute } from 'components/PublicRoute/PublicRoute';
 
 export function App() {
+  const dispatch = useDispatch();
+  const isFetchingCurrentUser = useSelector(getIsFetchingCurrentUser);
+  useEffect(() => {
+    dispatch(fetchCurrentUser());
+  }, [dispatch]);
 
-const {contacts, filter} = useSelector(state => state);
-
-const dispatch = useDispatch();
-useEffect(()=>{
-	        dispatch(fetchContacts())
-	    }, [dispatch])
-
-const getValueSubmitForm = value => {
-    if(checkContacts(value.name)) {
-      return alert(`${value.name} is already in contacts`)
-    }
-			dispatch(addContacts(value))
-	};
-
-const checkContacts = contact => {
-  return contacts.items.find(element => 
-    element.name.toLowerCase() === contact.toLowerCase()
-  )
+  return (
+    isFetchingCurrentUser && (
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route
+            index
+            element={
+              <PublicRoute>
+                <Home />
+              </PublicRoute>
+            }
+          ></Route>
+          <Route
+            path="contacts"
+            element={
+              <PrivateRoute redirect="/login">
+                <PageContact />
+              </PrivateRoute>
+            }
+          ></Route>
+          <Route
+            path="login"
+            element={
+              <PublicRoute restricted redirect="/contacts">
+                <PageLogin />
+              </PublicRoute>
+            }
+          ></Route>
+          <Route
+            path="register"
+            element={
+              <PublicRoute restricted redirect="/contacts">
+                <PageRegister />
+              </PublicRoute>
+            }
+          ></Route>
+          <Route path="*" element={<Navigate to="/" />}></Route>
+        </Route>
+      </Routes>
+    )
+  );
 }
-
-const onChange = (event) => {
-		const name = event.currentTarget.value;
-		dispatch(filterContacts(name))
-	    }
-
-const onFilterContact = () => {
-	const currentFilter = filter.toLowerCase();
-	return contacts.items.filter((element) => {
-return element.name.toLowerCase().includes(currentFilter)
-	})
-}
-
-
-		return (
-			<>
-			<GlobalBox>
-				<Section title="PhoneBook">
-					<ContactForm submitForm={getValueSubmitForm} />
-				</Section>
-				<Section title="Contacts">
-					<Filter onChange={onChange} />
-					<ContactList contacts={onFilterContact()} 
-					onDeleteContact={(id) => dispatch(deleteContacts(id))}/>
-				</Section>
-				</GlobalBox>
-			</>
-		);
-}
-

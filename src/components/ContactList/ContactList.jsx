@@ -15,9 +15,9 @@ export const ContactList = ({contacts, onDeleteContact}) => {
     return (
        <Box>
        {spinner ? <GridLoader  color="#12039b" /> : <List>
-{contacts.map(({id, name, phone}) => {
+{contacts.map(({id, name, number}) => {
     return (
-        <ContactItem key={id} id={id} name={name} phone={phone} onDeleteContact={onDeleteContact}/>
+        <ContactItem key={id} id={id} name={name} number={number} onDeleteContact={onDeleteContact}/>
     )
 })}
         </List>}
