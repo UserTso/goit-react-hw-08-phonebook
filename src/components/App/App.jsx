@@ -1,15 +1,31 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
+import {lazy} from 'react';
 import { Layout } from '../Layout/Layout';
 import { Home } from '../../Pages/Home/Home';
-import { PageContact } from '../../Pages/PageContact/PageContact';
 import { PrivateRoute } from 'components/PrivateRoute/PrivateRoute';
-import { PageLogin } from '../../Pages/PageLogin/PageLogin';
-import { PageRegister } from '../../Pages/PageRegister/PageRegister';
 import { useDispatch, useSelector } from 'react-redux';
 import { getIsFetchingCurrentUser } from 'redux/auth/authSelectors';
 import { fetchCurrentUser } from 'redux/auth/authOperations';
 import { useEffect } from 'react';
 import { PublicRoute } from 'components/PublicRoute/PublicRoute';
+
+
+const PageContact = lazy(() => import('../../Pages/PageContact/PageContact').then(module => ({
+	...module,
+	default: module.PageContact,
+})));
+
+const PageRegister = lazy(() => import('../../Pages/PageRegister/PageRegister').then(module => ({
+	...module,
+	default: module.PageRegister,
+})));
+
+const PageLogin = lazy(() => import('../../Pages/PageLogin/PageLogin').then(module => ({
+	...module,
+	default: module.PageLogin,
+})));
+
+
 
 export function App() {
   const dispatch = useDispatch();

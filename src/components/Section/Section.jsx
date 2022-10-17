@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 
 export function Section({title, children}) { 
+    console.log(typeof children)
     
     return (
         <section>
