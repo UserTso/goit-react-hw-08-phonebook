@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { register } from "redux/auth/authOperations";
+import {WrapperRegister, Form, Label, Span, Input, Button} from './PageRegister.styled';
 
 export function PageRegister() {
 
@@ -35,17 +36,20 @@ export function PageRegister() {
     }
 
     return(
-        <form onSubmit={handleSubmit}>
-            <label>name
-    <input type="text" name="name" onChange={handleChange} value={name} />
-</label>
-<label>mail
-    <input type="email" name="email" onChange={handleChange} value={email}/>
-</label>
-<label>password
-    <input type="password" name="password" onChange={handleChange} value={password}/>
-</label>
-<button type="submit">Registration</button>
-        </form>
+        <WrapperRegister>
+            <Form onSubmit={handleSubmit}>
+            <Label><Span>name</Span>
+    <Input type="text" name="name" onChange={handleChange} value={name} />
+</Label>
+<Label><Span>mail</Span>
+    <Input type="email" name="email" onChange={handleChange} value={email}/>
+</Label>
+<Label><Span>password</Span>
+    <Input type="password" name="password" onChange={handleChange} value={password}/>
+</Label>
+<Button type="submit">Registration</Button>
+        </Form>
+        </WrapperRegister>
+        
     )
 }

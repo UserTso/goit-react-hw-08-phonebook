@@ -3,32 +3,33 @@ import { Suspense } from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink, Outlet } from 'react-router-dom';
 import { getIsLoggedin } from 'redux/auth/authSelectors';
+import {Container, Header, HeaderNav, AuthNav, Span, Main} from './Layout.styled';
 
 export function Layout() {
   const isLoggedIn = useSelector(getIsLoggedin);
   return (
-    <>
-      <header>
-        <nav>
-          <NavLink end to="/">
-            Home
+    <Container>
+      <Header>
+        <HeaderNav>
+          <NavLink end to="/" >
+            <Span>Home</Span>
           </NavLink>
-          {isLoggedIn && <NavLink to="/contacts">Contacts</NavLink>}
+          {isLoggedIn && <NavLink to="/contacts"><Span>Contacts</Span></NavLink>}
           {isLoggedIn ? (
             <UserMenu />
           ) : (
-            <>
-              <NavLink to="/login">Log in</NavLink>
-              <NavLink to="/register">Register</NavLink>
-            </>
+            <AuthNav>
+              <NavLink to="/login"><Span>Log in</Span></NavLink>
+              <NavLink to="/register"><Span>Registration</Span></NavLink>
+            </AuthNav>
           )}
-        </nav>
-      </header>
-      <main>
+        </HeaderNav>
+      </Header>
+      <Main>
         <Suspense fallback={'Loading...'}>
           <Outlet />
         </Suspense>
-      </main>
-    </>
+      </Main>
+    </Container>
   );
 }

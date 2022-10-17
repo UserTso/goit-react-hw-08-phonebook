@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { logIn } from 'redux/auth/authOperations';
+import {WrapperLogin, Form, Label, Input, Span, Button} from './PageLogin.styled';
 
 export function PageLogin() {
   const [email, setEmail] = useState('');
@@ -29,26 +30,33 @@ export function PageLogin() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
+  <WrapperLogin>
+     <Form onSubmit={handleSubmit}>
+      <Label>
+        <Span>
         mail
-        <input
+        </Span>
+        <Input
           type="email"
           name="email"
           onChange={handleChange}
           value={email}
         />
-      </label>
-      <label>
+      </Label>
+      <Label>
+        <Span>
         password
-        <input
+        </Span>
+        <Input
           type="password"
           name="password"
           onChange={handleChange}
           value={password}
         />
-      </label>
-      <button type="submit">Log in</button>
-    </form>
+      </Label>
+      <Button type="submit">Log in</Button>
+    </Form>
+  </WrapperLogin>
+   
   );
 }

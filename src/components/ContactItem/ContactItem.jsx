@@ -1,34 +1,29 @@
+
 import PropTypes from 'prop-types';
-// import { useState } from 'react';
-// import { useSelector } from 'react-redux';
-import { Item, Span, Button } from './ContactItem.styled';
-// import{getContactsIsLoading} from 'redux/contacts/contactsSelectors';
+import Button from '@mui/material/Button';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Item, Span } from './ContactItem.styled';
 
 export const ContactItem = ({ id, name, number, onDeleteContact }) => {
-	// const [isLocalLoading, setIsLocalLoading] = useState(false);
-// const isLoading = useSelector(getContactsIsLoading);
-	return (
-		<Item>
-			<Span>
-				{name}:{number}
-			</Span>
-			<Button
-				type="button"
+  return (
+    <Item>
+      <Span>
+        {name}:{number}
+      </Span>
+
+      <Button 	type="button"
 				onClick={() => {
 					onDeleteContact(id);
-					// setIsLocalLoading(true);
-				}}
-			>
-				{/* {isLoading ? 'loading...' : 'Delete'} */}
-				Delete
-			</Button>
-		</Item>
-	);
+				}} variant="outlined" startIcon={<DeleteIcon />}>
+  Delete
+</Button>
+    </Item>
+  );
 };
 
 ContactItem.propTypes = {
-	id: PropTypes.string.isRequired,
-	name: PropTypes.string.isRequired,
-	number: PropTypes.string.isRequired,
-	onDeleteContact: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  number: PropTypes.string.isRequired,
+  onDeleteContact: PropTypes.func.isRequired,
 };

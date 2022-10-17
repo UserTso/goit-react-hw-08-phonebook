@@ -1,5 +1,7 @@
+import {Title, Span} from './Home.styled';
+
 export function Home(){
     return(
-        <div>Hello!!!</div>
+        <Title><Span>Hello:) !!!</Span><Span>This is your phonebook)</Span></Title>
     )
 }

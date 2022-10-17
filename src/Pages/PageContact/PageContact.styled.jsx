@@ -9,4 +9,5 @@ display: flex;
 flex-direction: column;
 background-color: #8faebc45;
 text-align: center;
+height: 100vh;
 `;
