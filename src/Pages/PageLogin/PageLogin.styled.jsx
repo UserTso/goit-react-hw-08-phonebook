@@ -11,7 +11,6 @@ export const WrapperLogin = styled.div`
 
 export const Form = styled.form`
      display: flex;
-    /* justify-content: center; */
     align-items: flex-end;
     flex-direction: column;
     width: 350px;
